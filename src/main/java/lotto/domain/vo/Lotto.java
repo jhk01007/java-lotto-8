@@ -1,0 +1,55 @@
+package lotto.domain.vo;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+
+import static lotto.global.exception.ErrorMessage.*;
+
+public class Lotto {
+    private final List<Integer> numbers;
+
+    private Lotto(List<Integer> numbers) {
+        this.numbers = numbers;
+    }
+
+    public static Lotto from(List<Integer> numbers) {
+        validate(numbers);
+        return new Lotto(numbers);
+    }
+
+    public List<Integer> getNumbers() {
+        return List.copyOf(this.numbers);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Lotto lotto = (Lotto) o;
+        return Objects.equals(numbers, lotto.numbers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(numbers);
+    }
+
+    private static void validate(List<Integer> numbers) {
+        validateNumbersSize(numbers);
+        validateNumbersDuplicate(numbers);
+    }
+
+    private static void validateNumbersSize(List<Integer> numbers) {
+        if (numbers.size() != 6) {
+            throw new IllegalArgumentException(LOTTO_NUMBERS_SIZE_ERROR.getMessage());
+        }
+    }
+
+    private static void validateNumbersDuplicate(List<Integer> numbers) {
+        HashSet<Integer> numbersSet = new HashSet<>(numbers);
+        if(numbers.size() != numbersSet.size()) {
+            throw new IllegalArgumentException(LOTTO_NUMBERS_DUPLICATE_ERROR.getMessage());
+        }
+    }
+}
