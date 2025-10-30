@@ -3,11 +3,12 @@ package lotto.domain.vo;
 
 import java.util.Objects;
 
+import static lotto.global.constants.LottoConstants.PRICE_PER_GAME;
 import static lotto.global.exception.ErrorMessage.PURCHASE_UNIT_ERROR;
 
 public class PurchaseAmount {
 
-    private static final int PURCHASE_UNIT = 1000;
+
     private final int amount;
 
     private PurchaseAmount(int amount) {
@@ -37,12 +38,12 @@ public class PurchaseAmount {
     }
 
     private static void validatePurchaseAmount(int amount) {
-        if(amount == 0 || amount % PURCHASE_UNIT != 0) {
+        if(amount == 0 || amount % PRICE_PER_GAME != 0) {
             throw new IllegalArgumentException(PURCHASE_UNIT_ERROR.getMessage());
         }
     }
 
     public int getPurchaseCount() {
-        return amount / PURCHASE_UNIT;
+        return amount / PRICE_PER_GAME;
     }
 }
