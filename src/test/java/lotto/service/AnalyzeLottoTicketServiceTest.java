@@ -14,9 +14,9 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ComputeLottoStatisticsServiceTest {
+class AnalyzeLottoTicketServiceTest {
 
-    private final ComputeLottoStatisticsService service = new ComputeLottoStatisticsService();
+    private final AnalyzeLottoTicketService service = new AnalyzeLottoTicketService();
 
     @Test
     @DisplayName("로또 티켓과 당첨 번호를 통해 당첨결과를 계산한다.")

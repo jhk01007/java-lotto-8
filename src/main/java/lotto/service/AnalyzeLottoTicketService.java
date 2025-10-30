@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-public class ComputeLottoStatisticsService {
+public class AnalyzeLottoTicketService {
 
     private static final int ROUND_SCALE = 2; // 반올림할 자릿수 n (n번째 자리에서 반올림)
 
