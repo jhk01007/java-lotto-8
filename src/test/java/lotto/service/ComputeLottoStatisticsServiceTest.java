@@ -51,7 +51,7 @@ class ComputeLottoStatisticsServiceTest {
     }
 
     @Test
-    @DisplayName("구매 금액과 당첨결과를 통해 수익률을 계산한다.")
+    @DisplayName("구매 금액과 당첨결과를 통해 수익률을 계산한다. 수익률은 소숫점 둘째 자리에서 반올림 한다.")
     public void computeProfitRate() throws Exception {
         // given
         Map<LottoRank, Integer> winningResults = Map.of(
@@ -61,13 +61,13 @@ class ComputeLottoStatisticsServiceTest {
                 LottoRank.FOURTH, 0,
                 LottoRank.FIFTH, 1
         );
-        PurchaseAmount purchaseAmount = PurchaseAmount.from(8000);
+        PurchaseAmount purchaseAmount = PurchaseAmount.from(3000);
 
         // when
         double profitRate = service.computeProfitRate(winningResults, purchaseAmount);
 
         // then
-        assertThat(profitRate).isEqualTo(62.5);
+        assertThat(profitRate).isEqualTo(166.7); // 5000/3000*100 = 166.666... -> 166.7
     }
 
     private static LottoTicket createLottoTicket(int amount, List<Lotto> lottos) {

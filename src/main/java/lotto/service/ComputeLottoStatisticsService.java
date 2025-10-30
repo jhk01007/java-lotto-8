@@ -13,6 +13,9 @@ import java.util.Map;
 
 public class ComputeLottoStatisticsService {
 
+    private static final int ROUND_SCALE = 2; // 반올림할 자릿수 n (n번째 자리에서 반올림)
+
+
     public HashMap<LottoRank, Integer> computeWinningResults(
             LottoTicket lottoTicket, LottoWinningNumbers lottoWinningNumbers) {
         HashMap<LottoRank, Integer> results = initWinningResults();
@@ -36,12 +39,15 @@ public class ComputeLottoStatisticsService {
             totalWinningAmount += lottoRank.getWinningAmount() * winningResults.get(lottoRank);
         }
 
-        return totalWinningAmount / purchaseAmount.getAmount() * 100;
+
+        double profilRate = totalWinningAmount / purchaseAmount.getAmount() * 100;
+        return roundUpProfilRate(profilRate); // 첫째자리까지 반올림
     }
 
     /*
     private 메서드 시작
      */
+
     private static HashMap<LottoRank, Integer> initWinningResults() {
         HashMap<LottoRank, Integer> initWinningResults = new HashMap<>(LottoRank.values().length); // 등수 갯수 만큼 Map의 크기를 제한
         for (LottoRank lottoRank : LottoRank.values()) {
@@ -49,7 +55,6 @@ public class ComputeLottoStatisticsService {
         }
         return initWinningResults;
     }
-
     private static int countMatchedNumbers(HashSet<Integer> lottoSet, List<Integer> winningNumbers) {
         int matchedCount = 0;
         for (int winningNumber : winningNumbers) {
@@ -103,5 +108,9 @@ public class ComputeLottoStatisticsService {
 
     private static void increment(HashMap<LottoRank, Integer> results, LottoRank rank) {
         results.merge(rank, 1, Integer::sum);
+    }
+
+    private static double roundUpProfilRate(double profilRate) {
+        return Math.round(profilRate * Math.pow(10, ROUND_SCALE - 1)) / Math.pow(10, ROUND_SCALE - 1);
     }
 }
