@@ -12,18 +12,18 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class LottoTest {
 
     @Test
-    @DisplayName("로또 번호는 중복되지 않는 6개의 숫자로 이루어진다.")
+    @DisplayName("로또 번호는 중복되지 않는 오름차순으로 정렬된 6개의 숫자로 이루어진다.")
     void from_success() {
 
         // given
-        List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6);
+        List<Integer> numbers = List.of(3, 1, 2, 6, 4, 5);
 
         // when
         Lotto lotto = Lotto.from(numbers);
 
         // then
         assertThat(lotto.getNumbers())
-                .containsExactlyInAnyOrder(1, 2, 3, 4, 5, 6);
+                .containsExactly(1, 2, 3, 4, 5, 6);
     }
 
     @Test
@@ -50,6 +50,4 @@ class LottoTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(LOTTO_NUMBERS_DUPLICATE_ERROR.getMessage());
     }
-
-    // TODO: 추가 기능 구현에 따른 테스트 코드 작성
 }

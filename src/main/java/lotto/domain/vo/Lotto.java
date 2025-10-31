@@ -15,7 +15,7 @@ public class Lotto {
 
     public static Lotto from(List<Integer> numbers) {
         validate(numbers);
-        return new Lotto(numbers);
+        return new Lotto(sortNumbersAscending(numbers)); // 오름차순으로 정렬해서 저장
     }
 
     public List<Integer> getNumbers() {
@@ -33,6 +33,12 @@ public class Lotto {
     @Override
     public int hashCode() {
         return Objects.hashCode(numbers);
+    }
+
+    private static List<Integer> sortNumbersAscending(List<Integer> numbers) {
+        return numbers.stream()
+                .sorted()
+                .toList();
     }
 
     private static void validate(List<Integer> numbers) {
