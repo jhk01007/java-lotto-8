@@ -22,17 +22,15 @@ class AnalyzeLottoTicketServiceTest {
     @DisplayName("로또 티켓과 당첨 번호를 통해 당첨결과를 계산한다.")
     public void computeWinningResults() throws Exception {
         // given
-        LottoTicket lottoTicket = createLottoTicket(8000, List.of(
-                Lotto.from(List.of(8, 21, 23, 41, 42, 43)),
-                Lotto.from(List.of(3, 5, 11, 16, 32, 38)),
-                Lotto.from(List.of(7, 11, 16, 35, 36, 44)),
-                Lotto.from(List.of(1, 8, 11, 31, 41, 42)),
-                Lotto.from(List.of(13, 14, 16, 38, 42, 45)),
-                Lotto.from(List.of(7, 11, 30, 40, 42, 43)),
-                Lotto.from(List.of(2, 13, 22, 32, 38, 45)),
-                Lotto.from(List.of(1, 3, 5, 14, 22, 45))
+        LottoTicket lottoTicket = createLottoTicket(5000, List.of(
+                Lotto.from(List.of(1, 2, 3, 4, 5, 6)), // 1등
+                Lotto.from(List.of(1, 2, 3, 4, 5, 7)), // 2등
+                Lotto.from(List.of(1, 2, 3, 4, 5, 8)), // 3등
+                Lotto.from(List.of(1, 2, 3, 4, 7, 8)), // 4등
+                Lotto.from(List.of(1, 2, 3, 7, 8, 9)) // 5등
         ));
-        LottoWinningNumber lottoWinningNumber = createLottoWinningNumbers();
+        LottoWinningNumber lottoWinningNumber =
+                createLottoWinningNumbers(List.of(1, 2, 3, 4, 5, 6), 7);
 
         // when
         HashMap<LottoRank, Integer> results = service.computeWinningResults(lottoTicket, lottoWinningNumber);
@@ -41,10 +39,10 @@ class AnalyzeLottoTicketServiceTest {
         assertThat(results).hasSize(LottoRank.values().length)
                 .containsExactlyInAnyOrderEntriesOf(
                         Map.of(
-                                LottoRank.FIRST, 0,
-                                LottoRank.SECOND, 0,
-                                LottoRank.THIRD, 0,
-                                LottoRank.FOURTH, 0,
+                                LottoRank.FIRST, 1,
+                                LottoRank.SECOND, 1,
+                                LottoRank.THIRD, 1,
+                                LottoRank.FOURTH, 1,
                                 LottoRank.FIFTH, 1
                         )
                 );
@@ -77,10 +75,10 @@ class AnalyzeLottoTicketServiceTest {
         );
     }
 
-    private static LottoWinningNumber createLottoWinningNumbers() {
+    private static LottoWinningNumber createLottoWinningNumbers(List<Integer> winningNumbers, int bonusNumber) {
         return LottoWinningNumber.of(
-                List.of(1, 2, 3, 4, 5, 6),
-                7
+                winningNumbers,
+                bonusNumber
         );
     }
 

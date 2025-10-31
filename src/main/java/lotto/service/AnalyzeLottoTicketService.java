@@ -11,6 +11,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import static lotto.domain.vo.LottoRank.SECOND;
+import static lotto.domain.vo.LottoRank.THIRD;
+
 public class AnalyzeLottoTicketService {
 
     private static final int ROUND_SCALE = 2; // 반올림할 자릿수 n (n번째 자리에서 반올림)
@@ -41,7 +44,7 @@ public class AnalyzeLottoTicketService {
 
 
         double profilRate = totalWinningAmount / purchaseAmount.getAmount() * 100;
-        return roundUpProfilRate(profilRate); // 첫째자리까지 반올림
+        return roundUpProfitRate(profilRate); // 첫째자리까지 반올림
     }
 
     /*
@@ -74,35 +77,37 @@ public class AnalyzeLottoTicketService {
             boolean isBonusNumberMatch,
             HashMap<LottoRank, Integer> results
     ) {
-        for (LottoRank rank : LottoRank.values()) {
-            // 일치하지 않은 경우 패스
-            if (rank.getMatchedCount() != matchedCount) {
-                continue;
-            }
-            // 5개 맞춘 경우 2등, 3등 구분 필요
-            if (matchedCount == 5) {
-                handleFiveMatch(rank, isBonusNumberMatch, results);
-                return;
-            }
-            // 그외의 경우
-            increment(results, rank);
+        // 2등 3등에 대해 먼저 처리
+        if (handleSecondAndThird(matchedCount, isBonusNumberMatch, results)) {
             return;
         }
+        // 나머지 등수(1,4,5등) 처리
+        handleOtherRanks(matchedCount, results);
     }
 
-    private static void handleFiveMatch(
-            LottoRank rank,
-            boolean isBonusNumberMatch,
-            HashMap<LottoRank, Integer> results
-    ) {
-        // 2등: 보너스 일치 O
-        if (isBonusNumberMatch && rank == LottoRank.SECOND) {
-            increment(results, rank);
-            return;
+    private static boolean handleSecondAndThird(int matchedCount, boolean isBonusNumberMatch, HashMap<LottoRank, Integer> results) {
+        // 2등인 경우
+        if(matchedCount == 5 && isBonusNumberMatch) {
+            increment(results, SECOND);
+            return true;
         }
-        // 3등: 보너스 일치 X
-        if (!isBonusNumberMatch && rank == LottoRank.THIRD) {
-            increment(results, rank);
+        // 3등인 경우
+        if(matchedCount == 5 && !isBonusNumberMatch) {
+            increment(results, THIRD);
+            return true;
+        }
+        return false;
+    }
+
+    private static void handleOtherRanks(int matchedCount, HashMap<LottoRank, Integer> results) {
+        for (LottoRank lottoRank : results.keySet()) {
+            // 2등이나 3등인 경우는 패스
+            if(lottoRank.equals(SECOND) || lottoRank.equals(THIRD)) {
+                continue;
+            }
+            if(lottoRank.getMatchedCount() == matchedCount) {
+                increment(results, lottoRank);
+            }
         }
     }
 
@@ -110,7 +115,7 @@ public class AnalyzeLottoTicketService {
         results.merge(rank, 1, Integer::sum);
     }
 
-    private static double roundUpProfilRate(double profilRate) {
-        return Math.round(profilRate * Math.pow(10, ROUND_SCALE - 1)) / Math.pow(10, ROUND_SCALE - 1);
+    private static double roundUpProfitRate(double profitRate) {
+        return Math.round(profitRate * Math.pow(10, ROUND_SCALE - 1)) / Math.pow(10, ROUND_SCALE - 1);
     }
 }
