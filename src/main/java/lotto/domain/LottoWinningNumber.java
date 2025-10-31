@@ -5,19 +5,19 @@ import java.util.List;
 
 import static lotto.global.exception.ErrorMessage.*;
 
-public class LottoWinningNumbers {
+public class LottoWinningNumber {
 
     private final List<Integer> winningNumbers;
     private final int bonusNumber;
 
-    private LottoWinningNumbers(List<Integer> winningNumbers, int bonusNumber) {
+    private LottoWinningNumber(List<Integer> winningNumbers, int bonusNumber) {
         this.winningNumbers = winningNumbers;
         this.bonusNumber = bonusNumber;
     }
     
-    public static LottoWinningNumbers of(List<Integer> winningNumbers, int bonusNumber) {
+    public static LottoWinningNumber of(List<Integer> winningNumbers, int bonusNumber) {
         validate(winningNumbers, bonusNumber);
-        return new LottoWinningNumbers(winningNumbers, bonusNumber);
+        return new LottoWinningNumber(winningNumbers, bonusNumber);
     }
 
     public List<Integer> getWinningNumbers() {

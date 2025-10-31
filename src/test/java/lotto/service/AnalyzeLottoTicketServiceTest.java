@@ -1,7 +1,7 @@
 package lotto.service;
 
 import lotto.domain.LottoTicket;
-import lotto.domain.LottoWinningNumbers;
+import lotto.domain.LottoWinningNumber;
 import lotto.domain.vo.Lotto;
 import lotto.domain.vo.LottoRank;
 import lotto.domain.vo.PurchaseAmount;
@@ -32,10 +32,10 @@ class AnalyzeLottoTicketServiceTest {
                 Lotto.from(List.of(2, 13, 22, 32, 38, 45)),
                 Lotto.from(List.of(1, 3, 5, 14, 22, 45))
         ));
-        LottoWinningNumbers lottoWinningNumbers = createLottoWinningNumbers();
+        LottoWinningNumber lottoWinningNumber = createLottoWinningNumbers();
 
         // when
-        HashMap<LottoRank, Integer> results = service.computeWinningResults(lottoTicket, lottoWinningNumbers);
+        HashMap<LottoRank, Integer> results = service.computeWinningResults(lottoTicket, lottoWinningNumber);
 
         // then
         assertThat(results).hasSize(LottoRank.values().length)
@@ -77,8 +77,8 @@ class AnalyzeLottoTicketServiceTest {
         );
     }
 
-    private static LottoWinningNumbers createLottoWinningNumbers() {
-        return LottoWinningNumbers.of(
+    private static LottoWinningNumber createLottoWinningNumbers() {
+        return LottoWinningNumber.of(
                 List.of(1, 2, 3, 4, 5, 6),
                 7
         );

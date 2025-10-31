@@ -14,7 +14,7 @@ import static lotto.global.exception.ErrorMessage.WINNING_NUMBERS_SIZE_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class LottoWinningNumbersTest {
+class LottoWinningNumberTest {
 
     @Test
     @DisplayName("로또 결과는 중복되지 않는 당첨번호 6개와 1개의 보너스 번호로 이루어진다.")
@@ -24,12 +24,12 @@ class LottoWinningNumbersTest {
         int bonusNumber = 7;
 
         // when
-        LottoWinningNumbers lottoWinningNumbers = LottoWinningNumbers.of(winningNumbers, bonusNumber);
+        LottoWinningNumber lottoWinningNumber = LottoWinningNumber.of(winningNumbers, bonusNumber);
 
         // then
-        assertThat(lottoWinningNumbers.getWinningNumbers())
+        assertThat(lottoWinningNumber.getWinningNumbers())
                 .containsExactlyInAnyOrder(1, 2, 3, 4, 5, 6);
-        assertThat(lottoWinningNumbers.getBonusNumber())
+        assertThat(lottoWinningNumber.getBonusNumber())
                 .isEqualTo(7);
     }
 
@@ -41,7 +41,7 @@ class LottoWinningNumbersTest {
         int bonusNumber = 10;
 
         // when // then
-        assertThatThrownBy(() -> LottoWinningNumbers.of(winningNumbers, bonusNumber))
+        assertThatThrownBy(() -> LottoWinningNumber.of(winningNumbers, bonusNumber))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(WINNING_NUMBERS_SIZE_ERROR.getMessage());
     }
@@ -52,7 +52,7 @@ class LottoWinningNumbersTest {
     public void of_fail2(List<Integer> winningNumbers, int bonusNumber) throws Exception {
 
         // when // then
-        assertThatThrownBy(() -> LottoWinningNumbers.of(winningNumbers, bonusNumber))
+        assertThatThrownBy(() -> LottoWinningNumber.of(winningNumbers, bonusNumber))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(LOTTO_RESULT_DUPLICATE_ERROR.getMessage());
     }
