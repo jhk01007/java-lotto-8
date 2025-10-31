@@ -47,11 +47,12 @@ public class AnalysisLottoTicketController {
                 .toList();
     }
 
-    // 상금을 기준으로 오름차순으로 정렬 후 변환됨
+    // 등수를 기준으로 내림차순으로 정렬 후 변환됨
     private static List<AnalysisResponse.WinningResultDto> toSortedWinningResultDto(HashMap<LottoRank, Integer> results) {
         return Arrays.stream(LottoRank.values())
-                .sorted(Comparator.comparingLong(LottoRank::getWinningAmount))
+                .sorted(Comparator.comparingLong(LottoRank::getRank).reversed())
                 .map(rank -> new AnalysisResponse.WinningResultDto(
+                        rank.getRank(),
                         rank.getMatchedCount(),
                         rank.getWinningAmount(),
                         results.getOrDefault(rank, 0)

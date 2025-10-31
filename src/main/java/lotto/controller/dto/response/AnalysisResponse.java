@@ -7,6 +7,7 @@ public record AnalysisResponse(
         double profitRate
 ) {
     public record WinningResultDto(
+            int rank,
             int matchedCount,
             long winningAmount,
             int winningCount
