@@ -2,7 +2,6 @@ package lotto.controller;
 
 import lotto.controller.dto.request.PurchaseRequest;
 import lotto.controller.dto.response.PurchaseResponse;
-import lotto.controller.mapper.LottoMapper;
 import lotto.domain.LottoTicket;
 import lotto.domain.vo.PurchaseAmount;
 import lotto.global.BaseResponse;
@@ -26,6 +25,15 @@ public class PurchaseLottoController {
             return BaseResponse.onFailure(e.getMessage());
         }
 
-        return BaseResponse.onSuccess(LottoMapper.toPurchaseResponse(lottoTicket));
+        return BaseResponse.onSuccess(toPurchaseResponse(lottoTicket));
+    }
+
+    private static PurchaseResponse toPurchaseResponse(LottoTicket lottoTicket) {
+        return new PurchaseResponse(
+                lottoTicket.getPurchaseAmount().getNumberOfGames(),
+                lottoTicket.getPurchasedLottos().stream()
+                        .map(lotto -> new PurchaseResponse.LottoDto(lotto.getNumbers()))
+                        .toList()
+        );
     }
 }
