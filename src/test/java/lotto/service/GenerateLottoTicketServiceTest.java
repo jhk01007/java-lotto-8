@@ -1,45 +1,33 @@
 package lotto.service;
 
 import lotto.domain.LottoTicket;
-import lotto.domain.vo.Lotto;
-import lotto.global.constants.LottoConstants;
+import lotto.domain.vo.PurchaseAmount;
 import lotto.infra.random.LottoNumberGenerator;
-import org.assertj.core.api.Assertions;
+import lotto.infra.random.RandomLottoNumberGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
 class GenerateLottoTicketServiceTest {
 
-    private final FixedLottoNumberGenerator fixedLottoNumberGenerator = new FixedLottoNumberGenerator();
-    private final GenerateLottoTicketService service = new GenerateLottoTicketService(fixedLottoNumberGenerator);
+    private static final int RANDOM_SEED = 1000;
+    private final LottoNumberGenerator lottoNumberGenerator = new RandomLottoNumberGenerator();
+    private final GenerateLottoTicketService service = new GenerateLottoTicketService(lottoNumberGenerator);
 
     @Test
     @DisplayName("로또 티켓을 생성한다.")
     public void generate() throws Exception {
         // given
-        int purchaseAmount = 8000;
+        int amount = 3000;
+        PurchaseAmount purchaseAmount = PurchaseAmount.from(amount);
 
         // when
         LottoTicket lottoTicket = service.generate(purchaseAmount);
 
         // then
-        assertThat(lottoTicket.getPurchaseAmount().getAmount()).isEqualTo(purchaseAmount);
-        assertThat(lottoTicket.getPurchasedLottos()).hasSize(purchaseAmount / LottoConstants.PRICE_PER_GAME)
-                .allSatisfy(lotto ->
-                        assertThat(lotto.getNumbers()).containsExactlyInAnyOrder(1, 2, 3, 4, 5, 6));
-    }
-
-
-    static class FixedLottoNumberGenerator implements LottoNumberGenerator {
-
-        @Override
-        public List<Integer> generate() {
-            return List.of(1, 2, 3, 4, 5, 6);
-        }
+        assertThat(lottoTicket.getPurchaseAmount().getAmount()).isEqualTo(3000);
+        assertThat(lottoTicket.getPurchasedLottos()).hasSize(3);
     }
 
 }

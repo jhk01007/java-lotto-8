@@ -23,7 +23,7 @@ public class LottoTicket {
     }
 
     private static void validate(PurchaseAmount purchaseAmount, List<Lotto> lottoGames) {
-        if(purchaseAmount.getPurchaseCount() != lottoGames.size()) {
+        if(purchaseAmount.getNumberOfGames() != lottoGames.size()) {
             throw new IllegalArgumentException(INVALID_LOTTO_TICKET_ERROR.getMessage());
         }
     }

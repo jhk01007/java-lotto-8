@@ -10,12 +10,13 @@ public enum ErrorMessage {
     INVALID_WINNING_RESULTS_ERROR("유효하지 않은 당첨 결과입니다.");
 
     private final String message;
+    private static final String ERROR_PREFIX = "[ERROR] ";
 
     ErrorMessage(String message) {
         this.message = message;
     }
 
     public String getMessage() {
-        return message;
+        return ERROR_PREFIX + message;
     }
 }

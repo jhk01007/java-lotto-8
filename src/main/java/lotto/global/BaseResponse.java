@@ -5,7 +5,6 @@ import java.util.Optional;
 public class BaseResponse<T> {
 
     private static final String SUCCESS_MESSAGE = "SUCCESS";
-    private static final String ERROR_PREFIX = "[ERROR]";
     private final boolean isSuccess;
     private final String message;
     private final T result;
@@ -41,7 +40,7 @@ public class BaseResponse<T> {
 
     // 실패한 경우 응답 생성
     public static BaseResponse<Void> onFailure(String message) {
-        return new BaseResponse<>(false, ERROR_PREFIX + " " + message);
+        return new BaseResponse<>(false, message);
     }
 
 }

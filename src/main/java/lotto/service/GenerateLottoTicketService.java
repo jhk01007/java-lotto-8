@@ -8,8 +8,6 @@ import lotto.infra.random.LottoNumberGenerator;
 import java.util.ArrayList;
 import java.util.List;
 
-import static lotto.global.constants.LottoConstants.PRICE_PER_GAME;
-
 public class GenerateLottoTicketService {
 
     private final LottoNumberGenerator lottoNumberGenerator;
@@ -18,12 +16,12 @@ public class GenerateLottoTicketService {
         this.lottoNumberGenerator = lottoNumberGenerator;
     }
 
-    public LottoTicket generate(int purchaseAmount) {
+    public LottoTicket generate(PurchaseAmount purchaseAmount) {
         List<Lotto> generatedLottos = new ArrayList<>();
-        for (int i = 0; i < purchaseAmount / PRICE_PER_GAME; i++) {
+        for (int i = 0; i < purchaseAmount.getNumberOfGames(); i++) {
             generatedLottos.add(Lotto.from(lottoNumberGenerator.generate()));
         }
 
-        return LottoTicket.of(PurchaseAmount.from(purchaseAmount), generatedLottos);
+        return LottoTicket.of(purchaseAmount, generatedLottos);
     }
 }

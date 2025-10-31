@@ -43,7 +43,7 @@ public class PurchaseAmount {
         }
     }
 
-    public int getPurchaseCount() {
+    public int getNumberOfGames() {
         return amount / PRICE_PER_GAME;
     }
 }
