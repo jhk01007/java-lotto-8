@@ -1,4 +1,4 @@
-package lotto.infra;
+package lotto.infra.random;
 
 import camp.nextstep.edu.missionutils.Randoms;
 

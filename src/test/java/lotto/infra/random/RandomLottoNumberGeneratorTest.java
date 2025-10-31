@@ -1,4 +1,4 @@
-package lotto.infra;
+package lotto.infra.random;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
