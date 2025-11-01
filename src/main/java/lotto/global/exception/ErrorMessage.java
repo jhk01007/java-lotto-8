@@ -1,5 +1,8 @@
 package lotto.global.exception;
 
+import static lotto.global.constants.LottoConstants.LOTTO_MAX_NUMBER;
+import static lotto.global.constants.LottoConstants.LOTTO_MIN_NUMBER;
+
 public enum ErrorMessage {
 
     // 구매금액 관련 에러
@@ -8,6 +11,7 @@ public enum ErrorMessage {
     // 로또 번호 관련 에러
     LOTTO_NUMBERS_SIZE_ERROR("로또 번호는 6개여야 합니다."),
     LOTTO_NUMBERS_DUPLICATE_ERROR("로또 번호는 중복될 수 없습니다."),
+    LOTTO_NUMBERS_RANGE_ERROR(String.format("로또 번호는 %d ~ %d 사이여야 합니다", LOTTO_MIN_NUMBER, LOTTO_MAX_NUMBER)),
 
     // 당첨 번호 관련 에러
     MISSING_WINNING_NUMBERS_ERROR("당첨 번호를 입력해야 합니다."),

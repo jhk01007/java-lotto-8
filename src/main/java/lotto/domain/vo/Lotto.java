@@ -1,9 +1,13 @@
 package lotto.domain.vo;
 
+import lotto.global.constants.LottoConstants;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
+import static lotto.global.constants.LottoConstants.LOTTO_MAX_NUMBER;
+import static lotto.global.constants.LottoConstants.LOTTO_MIN_NUMBER;
 import static lotto.global.exception.ErrorMessage.*;
 
 // TODO: 불변처리
@@ -45,7 +49,7 @@ public class Lotto {
     private static void validate(List<Integer> numbers) {
         validateNumbersSize(numbers);
         validateNumbersDuplicate(numbers);
-        // TODO: 범위 검증 (1~45)
+        validateNumbersRange(numbers);
     }
 
     private static void validateNumbersSize(List<Integer> numbers) {
@@ -58,6 +62,14 @@ public class Lotto {
         HashSet<Integer> numbersSet = new HashSet<>(numbers);
         if(numbers.size() != numbersSet.size()) {
             throw new IllegalArgumentException(LOTTO_NUMBERS_DUPLICATE_ERROR.getMessage());
+        }
+    }
+
+    private static void validateNumbersRange(List<Integer> numbers) {
+        boolean isOutOfRange = numbers.stream()
+                .anyMatch(number -> LOTTO_MIN_NUMBER > number || LOTTO_MAX_NUMBER < number);
+        if(isOutOfRange) {
+            throw new IllegalArgumentException(LOTTO_NUMBERS_RANGE_ERROR.getMessage());
         }
     }
 }

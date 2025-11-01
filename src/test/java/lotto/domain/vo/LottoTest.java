@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static lotto.global.constants.LottoConstants.LOTTO_MAX_NUMBER;
+import static lotto.global.constants.LottoConstants.LOTTO_MIN_NUMBER;
 import static lotto.global.exception.ErrorMessage.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -49,5 +51,17 @@ class LottoTest {
         assertThatThrownBy(() -> Lotto.from(numbers))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(LOTTO_NUMBERS_DUPLICATE_ERROR.getMessage());
+    }
+
+    @Test
+    @DisplayName("로또 번호가 1~45사이의 수가 아니면 예외가 발생한다.")
+    public void from_fail3() throws Exception {
+        // given
+        List<Integer> numbers = List.of(0, 2, 3, 4, 5, 46);
+
+        // when then
+        assertThatThrownBy(() -> Lotto.from(numbers))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(LOTTO_NUMBERS_RANGE_ERROR.getMessage());
     }
 }
