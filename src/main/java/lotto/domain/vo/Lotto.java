@@ -1,6 +1,5 @@
 package lotto.domain.vo;
 
-import lotto.global.constants.LottoConstants;
 
 import java.util.HashSet;
 import java.util.List;
@@ -10,8 +9,7 @@ import static lotto.global.constants.LottoConstants.LOTTO_MAX_NUMBER;
 import static lotto.global.constants.LottoConstants.LOTTO_MIN_NUMBER;
 import static lotto.global.exception.ErrorMessage.*;
 
-// TODO: 불변처리
-public class Lotto {
+public final class Lotto {
     private final List<Integer> numbers;
 
     private Lotto(List<Integer> numbers) {

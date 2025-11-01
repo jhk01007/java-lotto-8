@@ -6,7 +6,7 @@ import java.util.Objects;
 import static lotto.global.constants.LottoConstants.PRICE_PER_GAME;
 import static lotto.global.exception.ErrorMessage.PURCHASE_AMOUNT_UNIT_ERROR;
 
-public class PurchaseAmount {
+public final class PurchaseAmount {
 
 
     private final int amount;
