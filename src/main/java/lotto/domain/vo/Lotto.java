@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import static lotto.global.exception.ErrorMessage.*;
 
+// TODO: 불변처리
 public class Lotto {
     private final List<Integer> numbers;
 
@@ -44,6 +45,7 @@ public class Lotto {
     private static void validate(List<Integer> numbers) {
         validateNumbersSize(numbers);
         validateNumbersDuplicate(numbers);
+        // TODO: 범위 검증 (1~45)
     }
 
     private static void validateNumbersSize(List<Integer> numbers) {

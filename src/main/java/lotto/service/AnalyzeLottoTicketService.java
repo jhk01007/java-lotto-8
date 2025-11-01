@@ -6,13 +6,8 @@ import lotto.domain.vo.Lotto;
 import lotto.domain.vo.LottoRank;
 import lotto.domain.vo.PurchaseAmount;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static lotto.domain.vo.LottoRank.SECOND;
-import static lotto.domain.vo.LottoRank.THIRD;
 
 public class AnalyzeLottoTicketService {
 
@@ -42,7 +37,6 @@ public class AnalyzeLottoTicketService {
             totalWinningAmount += lottoRank.getWinningAmount() * winningResults.get(lottoRank);
         }
 
-
         double profilRate = totalWinningAmount / purchaseAmount.getAmount() * 100;
         return roundUpProfitRate(profilRate); // 첫째자리까지 반올림
     }
@@ -50,7 +44,6 @@ public class AnalyzeLottoTicketService {
     /*
     private 메서드 시작
      */
-
     private static HashMap<LottoRank, Integer> initWinningResults() {
         HashMap<LottoRank, Integer> initWinningResults = new HashMap<>(LottoRank.values().length); // 등수 갯수 만큼 Map의 크기를 제한
         for (LottoRank lottoRank : LottoRank.values()) {
@@ -77,38 +70,10 @@ public class AnalyzeLottoTicketService {
             boolean isBonusNumberMatch,
             HashMap<LottoRank, Integer> results
     ) {
-        // 2등 3등에 대해 먼저 처리
-        if (handleSecondAndThird(matchedCount, isBonusNumberMatch, results)) {
-            return;
-        }
-        // 나머지 등수(1,4,5등) 처리
-        handleOtherRanks(matchedCount, results);
-    }
 
-    private static boolean handleSecondAndThird(int matchedCount, boolean isBonusNumberMatch, HashMap<LottoRank, Integer> results) {
-        // 2등인 경우
-        if(matchedCount == 5 && isBonusNumberMatch) {
-            increment(results, SECOND);
-            return true;
-        }
-        // 3등인 경우
-        if(matchedCount == 5 && !isBonusNumberMatch) {
-            increment(results, THIRD);
-            return true;
-        }
-        return false;
-    }
-
-    private static void handleOtherRanks(int matchedCount, HashMap<LottoRank, Integer> results) {
-        for (LottoRank lottoRank : results.keySet()) {
-            // 2등이나 3등인 경우는 패스
-            if(lottoRank.equals(SECOND) || lottoRank.equals(THIRD)) {
-                continue;
-            }
-            if(lottoRank.getMatchedCount() == matchedCount) {
-                increment(results, lottoRank);
-            }
-        }
+        Optional<LottoRank> lottoRank = LottoRank.of(matchedCount, isBonusNumberMatch);
+        lottoRank.ifPresent(rank ->
+                increment(results, rank));
     }
 
     private static void increment(HashMap<LottoRank, Integer> results, LottoRank rank) {

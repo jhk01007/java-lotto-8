@@ -1,5 +1,7 @@
 package lotto.domain.vo;
 
+import java.util.Optional;
+
 public enum LottoRank {
 
     // TODO: 상금이 회차별로 변경되는 부분 고려 - java.util.Properties
@@ -17,6 +19,21 @@ public enum LottoRank {
         this.rank = rank;
         this.matchedCount = matchedCount;
         this.winningAmount = winningAmount;
+    }
+
+    public static Optional<LottoRank> of(int matchedCount, boolean isBonusNumberMatch) {
+        if (matchedCount == 5 && isBonusNumberMatch) { // 2등 판별
+            return Optional.of(SECOND);
+        }
+        if (matchedCount == 5 && !isBonusNumberMatch) { // 3등 판별
+            return Optional.of(THIRD);
+        }
+        for (LottoRank lottoRank : LottoRank.values()) { // 나머지 판별
+            if(lottoRank.getMatchedCount() == matchedCount) {
+                return Optional.of(lottoRank);
+            }
+        }
+        return Optional.empty(); // 미당첨된 경우
     }
 
     public int getRank() {
