@@ -28,12 +28,12 @@ public class InputValidator {
             // int 범위 초과 검증
             if (big.compareTo(BigInteger.valueOf(Integer.MIN_VALUE)) < 0 ||
                     big.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0) {
-                throw new IllegalArgumentException(INVALID_NUMBER_FORMAT_ERROR.getMessage());
+                throw new IllegalArgumentException(NUMBER_OVERFLOW_ERROR.getMessage());
             }
 
             return big.intValue();
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(NUMBER_OVERFLOW_ERROR.getMessage());
+            throw new IllegalArgumentException(INVALID_NUMBER_FORMAT_ERROR.getMessage());
         }
     }
 }

@@ -35,6 +35,7 @@ public class AnalysisFlow {
             } catch (IllegalArgumentException e) {
                 // 당첨번호 관련 오류 발생 시 오류 메시지 출력
                 lottoOutputView.printErrorMessage(e.getMessage());
+                continue;
             }
 
             // 보너스 번호 입력
@@ -52,11 +53,16 @@ public class AnalysisFlow {
                     createAnalysisRequest(purchaseResponse, parsedWinningNumbers, parsedBonusNumber);
             BaseResponse<?> analysisResponse = analysisLottoTicketController.analysis(analysisRequest);
 
-            // 요청 성공시 출력
+            // 요청 성공시
             if (isRequestSuccess(analysisResponse)) {
-                AnalysisResponse response = (AnalysisResponse) analysisResponse.getResult().get();
-                lottoOutputView.printWinningStatistics(response);
+                AnalysisResponse result = (AnalysisResponse) analysisResponse.getResult().get();
+                lottoOutputView.printWinningStatistics(result);
                 return;
+            }
+
+            // 요청 실패시
+            if(!isRequestSuccess(analysisResponse)) {
+                lottoOutputView.printErrorMessage(analysisResponse.getMessage());
             }
         }
     }

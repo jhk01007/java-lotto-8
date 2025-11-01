@@ -31,18 +31,23 @@ public class PurchaseFlow {
             } catch (IllegalArgumentException e) {
                 // 구매금액 관련 오류 발생 시 오류 메시지 출력
                 lottoOutputView.printErrorMessage(e.getMessage());
+                continue;
             }
 
             // 컨트롤러에 구매 요청
             PurchaseRequest purchaseRequest = new PurchaseRequest(parsedPurchaseAmount);
-            BaseResponse<?> response = purchaseLottoController.purchase(purchaseRequest);
+            BaseResponse<?> purchaseResponse = purchaseLottoController.purchase(purchaseRequest);
 
-            // 요청 성공시
-            if (isRequestSuccess(response)) {
-                PurchaseResponse purchaseResponse = (PurchaseResponse) response.getResult().get();
-                // 출력
-                lottoOutputView.printPurchasedLottos(purchaseResponse);
-                return purchaseResponse;
+            // 요청 성공시 관련 메시지 출력
+            if (isRequestSuccess(purchaseResponse)) {
+                PurchaseResponse result = (PurchaseResponse) purchaseResponse.getResult().get();
+                lottoOutputView.printPurchasedLottos(result);
+                return result;
+            }
+
+            // 요청 실패시 에러 메시지 출력
+            if(!isRequestSuccess(purchaseResponse)) {
+                lottoOutputView.printErrorMessage(purchaseResponse.getMessage());
             }
         }
     }
