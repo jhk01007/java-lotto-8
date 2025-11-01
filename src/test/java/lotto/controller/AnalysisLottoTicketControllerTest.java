@@ -1,6 +1,5 @@
 package lotto.controller;
 
-import lotto.controller.AnalysisLottoTicketController;
 import lotto.controller.dto.request.AnalysisRequest;
 import lotto.controller.dto.response.AnalysisResponse;
 import lotto.domain.vo.LottoRank;
@@ -41,13 +40,13 @@ class AnalysisLottoTicketControllerTest {
         );
 
         // when
-        BaseResponse<AnalysisResponse> response = controller.analysis(analysisRequest);
+        BaseResponse<?> response = controller.analysis(analysisRequest);
 
         // then
         assertThat(response.isSuccess()).isTrue();
         assertThat(response.getResult()).isPresent();
 
-        AnalysisResponse analysisResponse = response.getResult().get();
+        AnalysisResponse analysisResponse = (AnalysisResponse) response.getResult().get();
         assertThat(analysisResponse.winningResults()).hasSize(LottoRank.values().length)
                 .extracting(
                         AnalysisResponse.WinningResultDto::matchedCount,
