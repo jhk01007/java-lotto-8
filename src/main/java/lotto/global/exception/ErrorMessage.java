@@ -1,13 +1,33 @@
 package lotto.global.exception;
 
 public enum ErrorMessage {
-    PURCHASE_UNIT_ERROR("구매 단위는 천원 단위여야 합니다."),
+
+    // 구매금액 관련 에러
+    PURCHASE_AMOUNT_UNIT_ERROR("구매금액의 단위는 천원 단위여야 합니다."),
+
+    // 로또 번호 관련 에러
     LOTTO_NUMBERS_SIZE_ERROR("로또 번호는 6개여야 합니다."),
     LOTTO_NUMBERS_DUPLICATE_ERROR("로또 번호는 중복될 수 없습니다."),
+
+    // 당첨 번호 관련 에러
+    MISSING_WINNING_NUMBERS_ERROR("당첨 번호를 입력해야 합니다."),
+    INVALID_WINNING_NUMBERS_ERROR("당첨 번호가 숫자형태가 아닙니다."),
     WINNING_NUMBERS_SIZE_ERROR("당첨 번호는 6개여야 합니다."),
-    LOTTO_RESULT_DUPLICATE_ERROR("당첨번호 및 보너스 번호는 중복될 수 없다."),
+
+    // 보너스 번호 관련 에러
+    INVALID_BONUS_NUMBER_ERROR("보너스 번호가 숫자형태가 아닙니다."),
+    LOTTO_RESULT_DUPLICATE_ERROR("당첨번호 및 보너스 번호는 중복될 수 없습니다."),
+
+    // 기타 에러
     INVALID_LOTTO_TICKET_ERROR("구매 금액과 발행한 로또 수가 일치하지 않습니다."),
-    INVALID_WINNING_RESULTS_ERROR("유효하지 않은 당첨 결과입니다.");
+    INVALID_WINNING_RESULTS_ERROR("유효하지 않은 당첨 결과입니다."),
+
+    // 숫자 형식 관련 에러
+    INVALID_NUMBER_FORMAT_ERROR("숫자만 입력해야 합니다."),
+    NUMBER_OVERFLOW_ERROR("입력된 숫자가 int 범위를 초과했습니다.");
+
+
+
 
     private final String message;
     private static final String ERROR_PREFIX = "[ERROR] ";

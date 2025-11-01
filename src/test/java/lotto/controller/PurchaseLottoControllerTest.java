@@ -1,6 +1,7 @@
 package lotto.controller;
 
 
+import lotto.controller.PurchaseLottoController;
 import lotto.controller.dto.request.PurchaseRequest;
 import lotto.controller.dto.response.PurchaseResponse;
 import lotto.global.BaseResponse;
@@ -9,12 +10,10 @@ import lotto.global.exception.ErrorMessage;
 import lotto.infra.random.LottoNumberGenerator;
 import lotto.infra.random.RandomLottoNumberGenerator;
 import lotto.service.GenerateLottoTicketService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
 
 class PurchaseLottoControllerTest {
 
@@ -59,7 +58,7 @@ class PurchaseLottoControllerTest {
 
         // then
         assertThat(response.isSuccess()).isFalse();
-        assertThat(response.getMessage()).isEqualTo(ErrorMessage.PURCHASE_UNIT_ERROR.getMessage());
+        assertThat(response.getMessage()).isEqualTo(ErrorMessage.PURCHASE_AMOUNT_UNIT_ERROR.getMessage());
     }
 
 }

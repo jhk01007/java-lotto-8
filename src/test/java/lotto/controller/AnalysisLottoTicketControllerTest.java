@@ -1,5 +1,6 @@
 package lotto.controller;
 
+import lotto.controller.AnalysisLottoTicketController;
 import lotto.controller.dto.request.AnalysisRequest;
 import lotto.controller.dto.response.AnalysisResponse;
 import lotto.domain.vo.LottoRank;

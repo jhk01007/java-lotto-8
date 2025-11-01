@@ -3,7 +3,8 @@ package lotto.view;
 import camp.nextstep.edu.missionutils.test.NsTest;
 import lotto.controller.dto.response.AnalysisResponse;
 import lotto.controller.dto.response.PurchaseResponse;
-import org.assertj.core.api.Assertions;
+import lotto.view.ConsoleLottoOutputView;
+import lotto.view.LottoOutputView;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

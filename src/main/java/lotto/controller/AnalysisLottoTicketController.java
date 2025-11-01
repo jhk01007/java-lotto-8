@@ -1,7 +1,7 @@
 package lotto.controller;
 
-import lotto.controller.dto.request.AnalysisRequest;
 import lotto.controller.dto.response.AnalysisResponse;
+import lotto.controller.dto.request.AnalysisRequest;
 import lotto.domain.LottoTicket;
 import lotto.domain.LottoWinningNumber;
 import lotto.domain.vo.Lotto;
@@ -19,17 +19,22 @@ public class AnalysisLottoTicketController {
         this.analyzeLottoTicketService = analyzeLottoTicketService;
     }
 
-    public BaseResponse<AnalysisResponse> analysis(AnalysisRequest request) {
+    public BaseResponse<?> analysis(AnalysisRequest request) {
+        HashMap<LottoRank, Integer> results = null;
+        double profitRate = 0;
 
-        // 당첨 결과 계산
-        LottoTicket lottoTicket = createLottoTicket(request);
-        LottoWinningNumber lottoWinningNumber =
-                LottoWinningNumber.of(request.winningNumbers(), request.bonusNumber());
-        HashMap<LottoRank, Integer> results =
-                analyzeLottoTicketService.computeWinningResults(lottoTicket, lottoWinningNumber);
+        try {
+            // 당첨 결과 계산
+            LottoTicket lottoTicket = createLottoTicket(request);
+            LottoWinningNumber lottoWinningNumber =
+                    LottoWinningNumber.of(request.winningNumbers(), request.bonusNumber());
+            results = analyzeLottoTicketService.computeWinningResults(lottoTicket, lottoWinningNumber);
 
-        // 수익률 계산
-        double profitRate = analyzeLottoTicketService.computeProfitRate(results, lottoTicket.getPurchaseAmount());
+            // 수익률 계산
+            profitRate = analyzeLottoTicketService.computeProfitRate(results, lottoTicket.getPurchaseAmount());
+        } catch (IllegalArgumentException e) {
+            return BaseResponse.onFailure(e.getMessage());
+        }
 
         return BaseResponse.onSuccess(
                 new AnalysisResponse(toSortedWinningResultDto(results), profitRate));

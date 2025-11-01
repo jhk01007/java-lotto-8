@@ -4,7 +4,7 @@ package lotto.domain.vo;
 import java.util.Objects;
 
 import static lotto.global.constants.LottoConstants.PRICE_PER_GAME;
-import static lotto.global.exception.ErrorMessage.PURCHASE_UNIT_ERROR;
+import static lotto.global.exception.ErrorMessage.PURCHASE_AMOUNT_UNIT_ERROR;
 
 public class PurchaseAmount {
 
@@ -39,7 +39,7 @@ public class PurchaseAmount {
 
     private static void validatePurchaseAmount(int amount) {
         if(amount == 0 || amount % PRICE_PER_GAME != 0) {
-            throw new IllegalArgumentException(PURCHASE_UNIT_ERROR.getMessage());
+            throw new IllegalArgumentException(PURCHASE_AMOUNT_UNIT_ERROR.getMessage());
         }
     }
 
