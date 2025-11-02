@@ -2,10 +2,7 @@ package lotto.service;
 
 import lotto.domain.LottoTicket;
 import lotto.domain.LottoWinningNumber;
-import lotto.domain.vo.Lotto;
-import lotto.domain.vo.LottoRank;
-import lotto.domain.vo.PurchaseAmount;
-import lotto.domain.vo.WinningLotto;
+import lotto.domain.vo.*;
 
 import java.util.*;
 
@@ -62,8 +59,8 @@ public class AnalyzeLottoTicketService {
         return matchedCount;
     }
 
-    private static boolean isBonusNumberMatch(HashSet<Integer> lottoSet, int bonusNumber) {
-        return !lottoSet.add(bonusNumber);
+    private static boolean isBonusNumberMatch(HashSet<Integer> lottoSet, BonusNumber bonusNumber) {
+        return !lottoSet.add(bonusNumber.getNumber());
     }
 
     private static void updateWinningResults(

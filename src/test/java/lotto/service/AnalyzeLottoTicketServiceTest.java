@@ -2,10 +2,7 @@ package lotto.service;
 
 import lotto.domain.LottoTicket;
 import lotto.domain.LottoWinningNumber;
-import lotto.domain.vo.Lotto;
-import lotto.domain.vo.LottoRank;
-import lotto.domain.vo.PurchaseAmount;
-import lotto.domain.vo.WinningLotto;
+import lotto.domain.vo.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -79,7 +76,7 @@ class AnalyzeLottoTicketServiceTest {
     private static LottoWinningNumber createLottoWinningNumbers(List<Integer> winningNumbers, int bonusNumber) {
         return LottoWinningNumber.of(
                 WinningLotto.from(winningNumbers),
-                bonusNumber
+                BonusNumber.from(bonusNumber)
         );
     }
 

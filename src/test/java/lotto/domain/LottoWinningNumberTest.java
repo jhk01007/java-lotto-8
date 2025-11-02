@@ -1,5 +1,6 @@
 package lotto.domain;
 
+import lotto.domain.vo.BonusNumber;
 import lotto.domain.vo.Lotto;
 import lotto.domain.vo.WinningLotto;
 import org.junit.jupiter.api.DisplayName;
@@ -25,22 +26,24 @@ class LottoWinningNumberTest {
         int bonusNumber = 7;
 
         // when
-        LottoWinningNumber lottoWinningNumber = LottoWinningNumber.of(WinningLotto.from(winningNumbers), bonusNumber);
+        LottoWinningNumber lottoWinningNumber = LottoWinningNumber.of(
+                WinningLotto.from(winningNumbers), BonusNumber.from(bonusNumber));
 
         // then
         assertThat(lottoWinningNumber.getWinningNumber().getNumbers())
                 .containsExactlyInAnyOrder(1, 2, 3, 4, 5, 6);
-        assertThat(lottoWinningNumber.getBonusNumber())
+        assertThat(lottoWinningNumber.getBonusNumber().getNumber())
                 .isEqualTo(7);
     }
 
     @ParameterizedTest
-    @DisplayName("당첨번호가 6개 및 보너스 번호 1개가 중복되면 예외가 발생한다..")
+    @DisplayName("당첨번호가 6개 및 보너스 번호 1개가 중복되면 예외가 발생한다.")
     @MethodSource("of_fail2_parameters")
     public void of_fail2(List<Integer> winningNumbers, int bonusNumber) throws Exception {
 
         // when // then
-        assertThatThrownBy(() -> LottoWinningNumber.of(WinningLotto.from(winningNumbers), bonusNumber))
+        assertThatThrownBy(() ->
+                LottoWinningNumber.of(WinningLotto.from(winningNumbers), BonusNumber.from(bonusNumber)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(LOTTO_RESULT_DUPLICATE_ERROR.getMessage());
     }

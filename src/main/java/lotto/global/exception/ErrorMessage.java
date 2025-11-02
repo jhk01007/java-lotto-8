@@ -20,7 +20,9 @@ public enum ErrorMessage {
 
     // 보너스 번호 관련 에러
     INVALID_BONUS_NUMBER_ERROR("보너스 번호가 숫자형태가 아닙니다."),
-    LOTTO_RESULT_DUPLICATE_ERROR("당첨번호 및 보너스 번호는 중복될 수 없습니다."),
+    LOTTO_RESULT_DUPLICATE_ERROR("보너스 번호는 당첨번호와 중복될 수 없습니다."),
+    BONUS_NUMBERS_RANGE_ERROR(String.format("보너스 번호는 %d ~ %d 사이여야 합니다", LOTTO_MIN_NUMBER, LOTTO_MAX_NUMBER)),
+
 
     // 기타 에러
     INVALID_LOTTO_TICKET_ERROR("구매 금액과 발행한 로또 수가 일치하지 않습니다."),
