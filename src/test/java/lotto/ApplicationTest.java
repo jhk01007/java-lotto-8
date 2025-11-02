@@ -1,19 +1,25 @@
 package lotto;
 
 import camp.nextstep.edu.missionutils.test.NsTest;
+import lotto.domain.vo.LottoRank;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
 
 import static camp.nextstep.edu.missionutils.test.Assertions.assertRandomUniqueNumbersInRangeTest;
 import static camp.nextstep.edu.missionutils.test.Assertions.assertSimpleTest;
+import static lotto.global.exception.ErrorMessage.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ApplicationTest extends NsTest {
     private static final String ERROR_MESSAGE = "[ERROR]";
 
     @Test
-    void 기능_테스트() {
+    @DisplayName("로또를 8개 구매했는데 5등 한개가 당첨")
+    void success_1() {
         assertRandomUniqueNumbersInRangeTest(
                 () -> {
                     run("8000", "1,2,3,4,5,6", "7");
@@ -27,11 +33,11 @@ class ApplicationTest extends NsTest {
                             "[7, 11, 30, 40, 42, 43]",
                             "[2, 13, 22, 32, 38, 45]",
                             "[1, 3, 5, 14, 22, 45]",
-                            "3개 일치 (5,000원) - 1개",
-                            "4개 일치 (50,000원) - 0개",
-                            "5개 일치 (1,500,000원) - 0개",
-                            "5개 일치, 보너스 볼 일치 (30,000,000원) - 0개",
-                            "6개 일치 (2,000,000,000원) - 0개",
+                            String.format("3개 일치 (%,d원) - 1개", LottoRank.FIFTH.getWinningAmount()),
+                            String.format("4개 일치 (%,d원) - 0개", LottoRank.FOURTH.getWinningAmount()),
+                            String.format("5개 일치 (%,d원) - 0개", LottoRank.THIRD.getWinningAmount()),
+                            String.format("5개 일치, 보너스 볼 일치 (%,d원) - 0개", LottoRank.SECOND.getWinningAmount()),
+                            String.format("6개 일치 (%,d원) - 0개", LottoRank.FIRST.getWinningAmount()),
                             "총 수익률은 62.5%입니다."
                     );
                 },
@@ -47,15 +53,127 @@ class ApplicationTest extends NsTest {
     }
 
     @Test
-    void 예외_테스트() {
+    @DisplayName("로또 5개를 구매했는데 각 등수 1개씩 당첨")
+    void success_2() {
+        assertRandomUniqueNumbersInRangeTest(
+                () -> {
+                    run("5000", "1,2,3,4,5,6", "7");
+                    assertThat(output()).contains(
+                            "5개를 구매했습니다.",
+                            "[1, 2, 3, 4, 5, 6]", // 1등
+                            "[1, 2, 3, 4, 5, 7]", // 2등
+                            "[1, 2, 3, 4, 5, 8]", // 3등
+                            "[1, 2, 3, 4, 7, 8]", // 4등
+                            "[1, 2, 3, 7, 8, 9]", // 5등
+                            String.format("3개 일치 (%,d원) - 1개", LottoRank.FIFTH.getWinningAmount()),
+                            String.format("4개 일치 (%,d원) - 1개", LottoRank.FOURTH.getWinningAmount()),
+                            String.format("5개 일치 (%,d원) - 1개", LottoRank.THIRD.getWinningAmount()),
+                            String.format("5개 일치, 보너스 볼 일치 (%,d원) - 1개", LottoRank.SECOND.getWinningAmount()),
+                            String.format("6개 일치 (%,d원) - 1개", LottoRank.FIRST.getWinningAmount()),
+                            "총 수익률은 40631100.0%입니다."
+                    );
+                },
+                List.of(1, 2, 3, 4, 5, 6),
+                List.of(1, 2, 3, 4, 5, 7),
+                List.of(1, 2, 3, 4, 5, 8),
+                List.of(1, 2, 3, 4, 7, 8),
+                List.of(1, 2, 3, 7, 8, 9)
+        );
+    }
+
+    @Test
+    @DisplayName("금액이 숫자가 아니면 예외가 발생한다.")
+    void purchaseAmount_fail_1() {
         assertSimpleTest(() -> {
             runException("1000j");
-            assertThat(output()).contains(ERROR_MESSAGE);
+            assertThat(output()).contains(INVALID_NUMBER_FORMAT_ERROR.getMessage());
         });
     }
+
+    @ParameterizedTest
+    @DisplayName("금액 int 범위에서 벗어나면 예외가 발생한다.")
+    @ValueSource(strings = {"-2147483649", "2147483648"})
+    void purchaseAmount_fail_2(String value) {
+        assertSimpleTest(() -> {
+            runException(value);
+            assertThat(output()).contains(NUMBER_OVERFLOW_ERROR.getMessage());
+        });
+    }
+
+    @Test
+    @DisplayName("금액이 천원 단위가 아니면 예외가 발생한다.")
+    void purchaseAmount_fail_3() {
+        assertSimpleTest(() -> {
+            runException("100");
+            assertThat(output()).contains(PURCHASE_AMOUNT_UNIT_ERROR.getMessage());
+        });
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"0, 1, 2, 3, 4, 5", "1, 2, 3, 4, 5, 46"})
+    @DisplayName("당첨번호가 범위(1~45)에서 벗어나면 예외가 발생한다.")
+    void winningNumber_fail_1(String winningNumberInput) {
+        assertSimpleTest(() -> {
+            runException("1000", winningNumberInput, "7");
+            assertThat(output()).contains(WINNING_NUMBERS_RANGE_ERROR.getMessage());
+        });
+    }
+
+    @Test
+    @DisplayName("당첨번호 중 숫자가 아닌 경우가 있으면 예외가 발생한다.")
+    void winningNumber_fail_2() {
+        assertSimpleTest(() -> {
+            String winningNumberInput = "0, 1, 2, 3, 4, a";
+            runException("1000", winningNumberInput, "7");
+            assertThat(output()).contains(INVALID_NUMBER_FORMAT_ERROR.getMessage());
+        });
+    }
+
+    @Test
+    @DisplayName("당첨번호의 갯수가 6개가 아니면 예외가 발생한다.")
+    void winningNumber_fail_3() {
+        assertSimpleTest(() -> {
+            String winningNumberInput = "1, 2, 3, 4, 5, 6, 7";
+            runException("1000", winningNumberInput, "7");
+            assertThat(output()).contains(WINNING_NUMBERS_SIZE_ERROR.getMessage());
+        });
+    }
+
+    @Test
+    @DisplayName("보너스 번호가 숫자가 아니면 예외가 발생한다.")
+    void bonusNumber_fail_1() {
+        assertSimpleTest(() -> {
+            String bonusNumberInput = "a";
+            runException("1000", "1, 2, 3, 4, 5, 6", bonusNumberInput);
+            assertThat(output()).contains(INVALID_NUMBER_FORMAT_ERROR.getMessage());
+        });
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"0", "46"})
+    @DisplayName("보너스 번호가 범위에서 벗어나면(1~45) 예외가 발생한다.")
+    void bonusNumber_fail_2(String bonusNumberInput) {
+        assertSimpleTest(() -> {
+            runException("1000", "1, 2, 3, 4, 5, 6", bonusNumberInput);
+            assertThat(output()).contains(BONUS_NUMBERS_RANGE_ERROR.getMessage());
+        });
+    }
+
+    @Test
+    @DisplayName("보너스 번호가 당첨번호와 중복되면 예외가 발생한다.")
+    void bonusNumber_fail_3() {
+        assertSimpleTest(() -> {
+            String bonusNumberInput = "6";
+            runException("1000", "1, 2, 3, 4, 5, 6", bonusNumberInput);
+            assertThat(output()).contains(LOTTO_RESULT_DUPLICATE_ERROR.getMessage());
+        });
+    }
+
+
 
     @Override
     public void runMain() {
         Application.main(new String[]{});
     }
+
 }
