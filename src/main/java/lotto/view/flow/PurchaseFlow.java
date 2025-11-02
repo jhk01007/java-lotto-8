@@ -22,32 +22,28 @@ public class PurchaseFlow {
 
     public PurchaseResponse run() {
         while (true) {
-            // 구매 금액 입력
-            String purchaseAmount = lottoInputView.readPurchaseAmount();
-
-            int parsedPurchaseAmount = 0;
-            try {
-                parsedPurchaseAmount = InputValidator.parseAndValidateInt(purchaseAmount);
-            } catch (IllegalArgumentException e) {
-                // 구매금액 관련 오류 발생 시 오류 메시지 출력
-                lottoOutputView.printErrorMessage(e.getMessage());
-                continue;
-            }
-
-            // 컨트롤러에 구매 요청
-            PurchaseRequest purchaseRequest = new PurchaseRequest(parsedPurchaseAmount);
-            BaseResponse<?> purchaseResponse = purchaseLottoController.purchase(purchaseRequest);
-
-            // 요청 성공시 관련 메시지 출력
-            if (isRequestSuccess(purchaseResponse)) {
-                PurchaseResponse result = (PurchaseResponse) purchaseResponse.getResult().get();
+            int amount = getPurchaseAmount(); // 구매금액 입력
+            PurchaseRequest request = new PurchaseRequest(amount);
+            BaseResponse<?> response = purchaseLottoController.purchase(request); // 컨트롤러에 구매 요청
+            if (isRequestSuccess(response)) { // 요청 성공시
+                PurchaseResponse result = (PurchaseResponse) response.getResult().get();
                 lottoOutputView.printPurchasedLottos(result);
                 return result;
             }
+            lottoOutputView.printErrorMessage(response.getMessage()); // 응답 성공시
+        }
+    }
 
-            // 요청 실패시 에러 메시지 출력
-            if(!isRequestSuccess(purchaseResponse)) {
-                lottoOutputView.printErrorMessage(purchaseResponse.getMessage());
+    /**
+     * 구매금액 입력 처리
+     */
+    private int getPurchaseAmount() {
+        while (true) {
+            String input = lottoInputView.readPurchaseAmount();
+            try {
+                return InputValidator.parseAndValidateInt(input);
+            } catch (IllegalArgumentException e) {
+                lottoOutputView.printErrorMessage(e.getMessage());
             }
         }
     }

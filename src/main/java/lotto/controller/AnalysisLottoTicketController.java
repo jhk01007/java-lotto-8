@@ -20,30 +20,27 @@ public class AnalysisLottoTicketController {
     }
 
     public BaseResponse<?> analysis(AnalysisRequest request) {
-        HashMap<LottoRank, Integer> results = null;
-        double profitRate = 0;
-
+        HashMap<LottoRank, Integer> results;
+        double profitRate;
         try {
-            // 당첨 결과 계산
             LottoTicket lottoTicket = createLottoTicket(request);
-            LottoWinningNumber lottoWinningNumber =
-                    LottoWinningNumber.of(request.winningNumbers(), request.bonusNumber());
-            results = analyzeLottoTicketService.computeWinningResults(lottoTicket, lottoWinningNumber);
-
-            // 수익률 계산
-            profitRate = analyzeLottoTicketService.computeProfitRate(results, lottoTicket.getPurchaseAmount());
+            LottoWinningNumber lottoWinningNumber = createLottoWinningNumber(request);
+            results = analyzeLottoTicketService.computeWinningResults(lottoTicket, lottoWinningNumber); // 당첨 결과 계산
+            profitRate = analyzeLottoTicketService.computeProfitRate(results, lottoTicket.getPurchaseAmount()); // 수익률 계산
         } catch (IllegalArgumentException e) {
             return BaseResponse.onFailure(e.getMessage());
         }
-
-        return BaseResponse.onSuccess(
-                new AnalysisResponse(toSortedWinningResultDto(results), profitRate));
+        return BaseResponse.onSuccess(new AnalysisResponse(toSortedWinningResultDto(results), profitRate));
     }
 
     private static LottoTicket createLottoTicket(AnalysisRequest request) {
         List<Lotto> purchasedLottos = toLottoDomains(request);
         PurchaseAmount purchaseAmount = PurchaseAmount.from(request.purchaseAmount());
         return LottoTicket.of(purchaseAmount, purchasedLottos);
+    }
+
+    private static LottoWinningNumber createLottoWinningNumber(AnalysisRequest request) {
+        return LottoWinningNumber.of(request.winningNumbers(), request.bonusNumber());
     }
 
     private static List<Lotto> toLottoDomains(AnalysisRequest request) {

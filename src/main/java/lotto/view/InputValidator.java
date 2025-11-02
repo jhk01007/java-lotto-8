@@ -22,15 +22,12 @@ public class InputValidator {
 
     public static int parseAndValidateInt(String value) {
         try {
-            // 숫자가 너무 커도 안전하게 처리하기 위해 BigInteger 사용
             BigInteger big = new BigInteger(value);
-
-            // int 범위 초과 검증
+            // 언더플로우, 오버플로우 검증
             if (big.compareTo(BigInteger.valueOf(Integer.MIN_VALUE)) < 0 ||
                     big.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0) {
                 throw new IllegalArgumentException(NUMBER_OVERFLOW_ERROR.getMessage());
             }
-
             return big.intValue();
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(INVALID_NUMBER_FORMAT_ERROR.getMessage());

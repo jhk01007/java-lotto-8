@@ -26,43 +26,43 @@ public class AnalysisFlow {
 
     public void run(PurchaseResponse purchaseResponse) {
         while (true) {
-
-            // 당첨번호 입력
-            String winningNumbers = lottoInputView.readWinningNumbers();
-            List<Integer> parsedWinningNumbers = null;
-            try {
-                parsedWinningNumbers = InputValidator.parseAndValidateWinningNumbers(winningNumbers);
-            } catch (IllegalArgumentException e) {
-                // 당첨번호 관련 오류 발생 시 오류 메시지 출력
-                lottoOutputView.printErrorMessage(e.getMessage());
-                continue;
-            }
-
-            // 보너스 번호 입력
-            String bonusNumber = lottoInputView.readBonusNumber();
-            int parsedBonusNumber = 0;
-            try {
-                parsedBonusNumber = InputValidator.parseAndValidateInt(bonusNumber);
-            } catch (IllegalArgumentException e) {
-                // 보너스 번호 관련 오류 발생 시 오류 메시지 출력
-                lottoOutputView.printErrorMessage(e.getMessage());
-            }
-
-            // 컨트롤러에 분석 요청
-            AnalysisRequest analysisRequest =
-                    createAnalysisRequest(purchaseResponse, parsedWinningNumbers, parsedBonusNumber);
-            BaseResponse<?> analysisResponse = analysisLottoTicketController.analysis(analysisRequest);
-
-            // 요청 성공시
-            if (isRequestSuccess(analysisResponse)) {
-                AnalysisResponse result = (AnalysisResponse) analysisResponse.getResult().get();
+            List<Integer> winning = getWinningNumbers(); // 당첨번호 입력
+            int bonus = getBonusNumber(); // 보너스 번호 입력
+            AnalysisRequest req = createAnalysisRequest(purchaseResponse, winning, bonus);
+            BaseResponse<?> res = analysisLottoTicketController.analysis(req); // 컨트롤러에 분석 요청
+            if (isRequestSuccess(res)) { // 요청 성공시
+                AnalysisResponse result = (AnalysisResponse) res.getResult().get();
                 lottoOutputView.printWinningStatistics(result);
                 return;
             }
+            lottoOutputView.printErrorMessage(res.getMessage()); // 요청 실패시
+        }
+    }
 
-            // 요청 실패시
-            if(!isRequestSuccess(analysisResponse)) {
-                lottoOutputView.printErrorMessage(analysisResponse.getMessage());
+    /**
+     * 당첨번호(6개) 입력 처리
+     */
+    private List<Integer> getWinningNumbers() {
+        while (true) {
+            String input = lottoInputView.readWinningNumbers();
+            try {
+                return InputValidator.parseAndValidateWinningNumbers(input);
+            } catch (IllegalArgumentException e) {
+                lottoOutputView.printErrorMessage(e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * 보너스 번호 입력 처리
+     */
+    private int getBonusNumber() {
+        while (true) {
+            String input = lottoInputView.readBonusNumber();
+            try {
+                return InputValidator.parseAndValidateInt(input);
+            } catch (IllegalArgumentException e) {
+                lottoOutputView.printErrorMessage(e.getMessage());
             }
         }
     }
