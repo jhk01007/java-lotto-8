@@ -1,7 +1,6 @@
 package lotto.controller;
 
 
-import lotto.controller.PurchaseLottoController;
 import lotto.controller.dto.request.PurchaseRequest;
 import lotto.controller.dto.response.PurchaseResponse;
 import lotto.global.BaseResponse;
@@ -34,13 +33,13 @@ class PurchaseLottoControllerTest {
         PurchaseRequest purchaseRequest = new PurchaseRequest(amount);
 
         // when
-        BaseResponse<?> response = purchaseLottoController.purchase(purchaseRequest);
+        BaseResponse<PurchaseResponse> response = purchaseLottoController.purchase(purchaseRequest);
 
         // then
         assertThat(response.isSuccess()).isTrue();
         assertThat(response.getResult()).isPresent();
 
-        PurchaseResponse purchaseResponse = (PurchaseResponse) response.getResult().get();
+        PurchaseResponse purchaseResponse = response.getResult().get();
         int numberOfGames = amount / LottoConstants.PRICE_PER_GAME;
         assertThat(purchaseResponse.numberOfGames()).isEqualTo(numberOfGames);
         assertThat(purchaseResponse.purchasedLottos()).hasSize(numberOfGames);

@@ -39,7 +39,7 @@ public class BaseResponse<T> {
     }
 
     // 실패한 경우 응답 생성
-    public static BaseResponse<Void> onFailure(String message) {
+    public static <T> BaseResponse<T> onFailure(String message) {
         return new BaseResponse<>(false, message);
     }
 

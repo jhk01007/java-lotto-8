@@ -17,7 +17,7 @@ public class AnalysisLottoTicketController {
         this.analyzeLottoTicketService = analyzeLottoTicketService;
     }
 
-    public BaseResponse<?> analysis(AnalysisRequest request) {
+    public BaseResponse<AnalysisResponse> analysis(AnalysisRequest request) {
         HashMap<LottoRank, Integer> results;
         double profitRate;
         try {

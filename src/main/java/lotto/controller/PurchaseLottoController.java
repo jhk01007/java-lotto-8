@@ -15,7 +15,7 @@ public class PurchaseLottoController {
         this.generateLottoTicketService = generateLottoTicketService;
     }
 
-    public BaseResponse<?> purchase(PurchaseRequest request) {
+    public BaseResponse<PurchaseResponse> purchase(PurchaseRequest request) {
 
         // TODO: 예외 처리 분리
         LottoTicket lottoTicket = null;

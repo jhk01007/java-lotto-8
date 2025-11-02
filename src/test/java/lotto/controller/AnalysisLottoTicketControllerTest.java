@@ -40,13 +40,13 @@ class AnalysisLottoTicketControllerTest {
         );
 
         // when
-        BaseResponse<?> response = controller.analysis(analysisRequest);
+        BaseResponse<AnalysisResponse> response = controller.analysis(analysisRequest);
 
         // then
         assertThat(response.isSuccess()).isTrue();
         assertThat(response.getResult()).isPresent();
 
-        AnalysisResponse analysisResponse = (AnalysisResponse) response.getResult().get();
+        AnalysisResponse analysisResponse = response.getResult().get();
         assertThat(analysisResponse.winningResults()).hasSize(LottoRank.values().length)
                 .extracting(
                         AnalysisResponse.WinningResultDto::matchedCount,
