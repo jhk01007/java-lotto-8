@@ -15,8 +15,9 @@ public final class PurchaseAmount {
         this.amount = amount;
     }
 
-    public int getAmount() {
-        return amount;
+    public static PurchaseAmount from(int amount) {
+        validatePurchaseAmount(amount);
+        return new PurchaseAmount(amount);
     }
 
     @Override
@@ -32,9 +33,8 @@ public final class PurchaseAmount {
         return Objects.hashCode(amount);
     }
 
-    public static PurchaseAmount from(int amount) {
-        validatePurchaseAmount(amount);
-        return new PurchaseAmount(amount);
+    public int getAmount() {
+        return amount;
     }
 
     private static void validatePurchaseAmount(int amount) {

@@ -30,9 +30,6 @@ public enum ErrorMessage {
     INVALID_NUMBER_FORMAT_ERROR("숫자만 입력해야 합니다."),
     NUMBER_OVERFLOW_ERROR("입력된 숫자가 int 범위를 초과했습니다.");
 
-
-
-
     private final String message;
     private static final String ERROR_PREFIX = "[ERROR] ";
 

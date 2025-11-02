@@ -21,6 +21,18 @@ public enum LottoRank {
         this.winningAmount = winningAmount;
     }
 
+    public int getRank() {
+        return rank;
+    }
+
+    public int getMatchedCount() {
+        return matchedCount;
+    }
+
+    public long getWinningAmount() {
+        return winningAmount;
+    }
+
     public static Optional<LottoRank> of(int matchedCount, boolean isBonusNumberMatch) {
         if (matchedCount == 5 && isBonusNumberMatch) { // 2등 판별
             return Optional.of(SECOND);
@@ -34,17 +46,5 @@ public enum LottoRank {
             }
         }
         return Optional.empty(); // 미당첨된 경우
-    }
-
-    public int getRank() {
-        return rank;
-    }
-
-    public int getMatchedCount() {
-        return matchedCount;
-    }
-
-    public long getWinningAmount() {
-        return winningAmount;
     }
 }

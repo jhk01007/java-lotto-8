@@ -21,10 +21,6 @@ public final class Lotto {
         return new Lotto(sortNumbersAscending(numbers)); // 오름차순으로 정렬해서 저장
     }
 
-    public List<Integer> getNumbers() {
-        return List.copyOf(this.numbers);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -36,6 +32,10 @@ public final class Lotto {
     @Override
     public int hashCode() {
         return Objects.hashCode(numbers);
+    }
+
+    public List<Integer> getNumbers() {
+        return List.copyOf(this.numbers);
     }
 
     private static List<Integer> sortNumbersAscending(List<Integer> numbers) {
