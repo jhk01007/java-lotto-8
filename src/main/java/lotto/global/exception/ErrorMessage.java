@@ -14,8 +14,8 @@ public enum ErrorMessage {
     LOTTO_NUMBERS_RANGE_ERROR(String.format("로또 번호는 %d ~ %d 사이여야 합니다", LOTTO_MIN_NUMBER, LOTTO_MAX_NUMBER)),
 
     // 당첨 번호 관련 에러
-    MISSING_WINNING_NUMBERS_ERROR("당첨 번호를 입력해야 합니다."),
-    INVALID_WINNING_NUMBERS_ERROR("당첨 번호가 숫자형태가 아닙니다."),
+    WINNING_NUMBERS_DUPLICATE_ERROR("당첨 번호는 중복될 수 없습니다."),
+    WINNING_NUMBERS_RANGE_ERROR(String.format("당첨 번호는 %d ~ %d 사이여야 합니다", LOTTO_MIN_NUMBER, LOTTO_MAX_NUMBER)),
     WINNING_NUMBERS_SIZE_ERROR("당첨 번호는 6개여야 합니다."),
 
     // 보너스 번호 관련 에러
@@ -26,9 +26,10 @@ public enum ErrorMessage {
     INVALID_LOTTO_TICKET_ERROR("구매 금액과 발행한 로또 수가 일치하지 않습니다."),
     INVALID_WINNING_RESULTS_ERROR("유효하지 않은 당첨 결과입니다."),
 
-    // 숫자 형식 관련 에러
+    // 입력 형식 관련 에러
+    EMPTY_INPUT_ERROR("값을 입력해주세요."),
     INVALID_NUMBER_FORMAT_ERROR("숫자만 입력해야 합니다."),
-    NUMBER_OVERFLOW_ERROR("입력된 숫자가 int 범위를 초과했습니다.");
+    NUMBER_OVERFLOW_ERROR("입력된 숫자가 범위를 초과했습니다.");
 
     private final String message;
     private static final String ERROR_PREFIX = "[ERROR] ";

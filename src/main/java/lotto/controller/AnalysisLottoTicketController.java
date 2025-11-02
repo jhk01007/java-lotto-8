@@ -7,6 +7,7 @@ import lotto.domain.LottoWinningNumber;
 import lotto.domain.vo.Lotto;
 import lotto.domain.vo.LottoRank;
 import lotto.domain.vo.PurchaseAmount;
+import lotto.domain.vo.WinningLotto;
 import lotto.global.BaseResponse;
 import lotto.service.AnalyzeLottoTicketService;
 
@@ -40,7 +41,7 @@ public class AnalysisLottoTicketController {
     }
 
     private static LottoWinningNumber createLottoWinningNumber(AnalysisRequest request) {
-        return LottoWinningNumber.of(request.winningNumbers(), request.bonusNumber());
+        return LottoWinningNumber.of(WinningLotto.from(request.winningNumbers()), request.bonusNumber());
     }
 
     private static List<Lotto> toLottoDomains(AnalysisRequest request) {

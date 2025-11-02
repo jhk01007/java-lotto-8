@@ -10,25 +10,28 @@ import static lotto.global.constants.LottoConstants.LOTTO_MIN_NUMBER;
 import static lotto.global.exception.ErrorMessage.*;
 
 /**
- * 구매한 로또
+ * 당첨 로또
+ * Lotto 클래스가 있는데 WinningLotto 를 만든 이유
+ * 1. 예외 메시지를 분리해서 가져갈 수 있음
+ * 2. 지금 당장은 두 개의 비즈니스 규칙이 같지만 추후 요구사항에 따라 달라질 수도 있음
  */
-public final class Lotto {
+public final class WinningLotto {
     private final List<Integer> numbers;
 
-    private Lotto(List<Integer> numbers) {
+    private WinningLotto(List<Integer> numbers) {
         this.numbers = numbers;
     }
 
-    public static Lotto from(List<Integer> numbers) {
+    public static WinningLotto from(List<Integer> numbers) {
         validate(numbers);
-        return new Lotto(sortNumbersAscending(numbers)); // 오름차순으로 정렬해서 저장
+        return new WinningLotto(numbers);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Lotto lotto = (Lotto) o;
+        WinningLotto lotto = (WinningLotto) o;
         return Objects.equals(numbers, lotto.numbers);
     }
 
@@ -41,12 +44,6 @@ public final class Lotto {
         return List.copyOf(this.numbers);
     }
 
-    private static List<Integer> sortNumbersAscending(List<Integer> numbers) {
-        return numbers.stream()
-                .sorted()
-                .toList();
-    }
-
     private static void validate(List<Integer> numbers) {
         validateNumbersSize(numbers);
         validateNumbersDuplicate(numbers);
@@ -55,14 +52,14 @@ public final class Lotto {
 
     private static void validateNumbersSize(List<Integer> numbers) {
         if (numbers.size() != 6) {
-            throw new IllegalArgumentException(LOTTO_NUMBERS_SIZE_ERROR.getMessage());
+            throw new IllegalArgumentException(WINNING_NUMBERS_SIZE_ERROR.getMessage());
         }
     }
 
     private static void validateNumbersDuplicate(List<Integer> numbers) {
         HashSet<Integer> numbersSet = new HashSet<>(numbers);
         if(numbers.size() != numbersSet.size()) {
-            throw new IllegalArgumentException(LOTTO_NUMBERS_DUPLICATE_ERROR.getMessage());
+            throw new IllegalArgumentException(WINNING_NUMBERS_DUPLICATE_ERROR.getMessage());
         }
     }
 
@@ -70,7 +67,7 @@ public final class Lotto {
         boolean isOutOfRange = numbers.stream()
                 .anyMatch(number -> LOTTO_MIN_NUMBER > number || LOTTO_MAX_NUMBER < number);
         if(isOutOfRange) {
-            throw new IllegalArgumentException(LOTTO_NUMBERS_RANGE_ERROR.getMessage());
+            throw new IllegalArgumentException(WINNING_NUMBERS_RANGE_ERROR.getMessage());
         }
     }
 }

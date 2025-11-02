@@ -7,20 +7,21 @@ import java.util.stream.Collectors;
 
 import static lotto.global.exception.ErrorMessage.*;
 
-public class InputValidator {
+public class InputParser {
 
-    public static List<Integer> parseAndValidateWinningNumbers(String winningNumbers) {
+    private static final String WINNING_NUMBER_DELIMITER = ",";
+    public static List<Integer> parseWinningNumbers(String winningNumbers) {
         if (winningNumbers == null || winningNumbers.isBlank()) {
-            throw new IllegalArgumentException(MISSING_WINNING_NUMBERS_ERROR.getMessage());
+            throw new IllegalArgumentException(EMPTY_INPUT_ERROR.getMessage());
         }
 
-        return Arrays.stream(winningNumbers.split(","))
+        return Arrays.stream(winningNumbers.split(WINNING_NUMBER_DELIMITER))
                 .map(String::trim)
-                .map(InputValidator::parseAndValidateInt)
+                .map(InputParser::parseInt)
                 .collect(Collectors.toList());
     }
 
-    public static int parseAndValidateInt(String value) {
+    public static int parseInt(String value) {
         try {
             BigInteger big = new BigInteger(value);
             // 언더플로우, 오버플로우 검증

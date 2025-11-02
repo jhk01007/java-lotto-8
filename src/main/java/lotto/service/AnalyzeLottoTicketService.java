@@ -5,6 +5,7 @@ import lotto.domain.LottoWinningNumber;
 import lotto.domain.vo.Lotto;
 import lotto.domain.vo.LottoRank;
 import lotto.domain.vo.PurchaseAmount;
+import lotto.domain.vo.WinningLotto;
 
 import java.util.*;
 
@@ -21,7 +22,7 @@ public class AnalyzeLottoTicketService {
         for (Lotto lotto : lottoTicket.getPurchasedLottos()) {
             HashSet<Integer> lottoSet = new HashSet<>(lotto.getNumbers());
             // 당첨번호 중 일치하는 것이 몇개인지 계산
-            int matchedCount = countMatchedNumbers(lottoSet, lottoWinningNumber.getWinningNumbers());
+            int matchedCount = countMatchedNumbers(lottoSet, lottoWinningNumber.getWinningNumber());
             // 보너스 번호와 일치하는지 확인
             boolean isBonusNumberMatch = isBonusNumberMatch(lottoSet, lottoWinningNumber.getBonusNumber());
             // 현재 로또의 결과를 기록
@@ -51,10 +52,10 @@ public class AnalyzeLottoTicketService {
         }
         return initWinningResults;
     }
-    private static int countMatchedNumbers(HashSet<Integer> lottoSet, List<Integer> winningNumbers) {
+    private static int countMatchedNumbers(HashSet<Integer> lottoSet, WinningLotto winningNumber) {
         int matchedCount = 0;
-        for (int winningNumber : winningNumbers) {
-            if (!lottoSet.add(winningNumber)) {
+        for (int num : winningNumber.getNumbers()) {
+            if (!lottoSet.add(num)) {
                 matchedCount++;
             }
         }

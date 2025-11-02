@@ -1,49 +1,45 @@
 package lotto.domain;
 
+import lotto.domain.vo.Lotto;
+import lotto.domain.vo.WinningLotto;
+
 import java.util.HashSet;
-import java.util.List;
 
 import static lotto.global.exception.ErrorMessage.*;
 
 public class LottoWinningNumber {
 
-    private final List<Integer> winningNumbers;
+    private final WinningLotto winningNumber;
     private final int bonusNumber;
 
-    private LottoWinningNumber(List<Integer> winningNumbers, int bonusNumber) {
-        this.winningNumbers = winningNumbers;
+    private LottoWinningNumber(WinningLotto winningNumber, int bonusNumber) {
+        this.winningNumber = winningNumber;
         this.bonusNumber = bonusNumber;
     }
     
-    public static LottoWinningNumber of(List<Integer> winningNumbers, int bonusNumber) {
-        validate(winningNumbers, bonusNumber);
-        return new LottoWinningNumber(winningNumbers, bonusNumber);
+    public static LottoWinningNumber of(WinningLotto winningNumber, int bonusNumber) {
+        validate(winningNumber, bonusNumber);
+        return new LottoWinningNumber(winningNumber, bonusNumber);
     }
 
-    public List<Integer> getWinningNumbers() {
-        return List.copyOf(winningNumbers);
+    public WinningLotto getWinningNumber() {
+        return winningNumber; // WinningLotto 는 불변 객체이기 때문에 그대로 반환
     }
 
     public int getBonusNumber() {
         return bonusNumber;
     }
 
-    private static void validate(List<Integer> winningNumbers, int bonusNumber) {
-        validateWinningNumbersSize(winningNumbers);
-        validateLottoResultDuplicate(winningNumbers, bonusNumber);
+    private static void validate(WinningLotto winningNumber, int bonusNumber) {
+        validateLottoResultDuplicate(winningNumber, bonusNumber);
     }
 
-    private static void validateWinningNumbersSize(List<Integer> numbers) {
-        if (numbers.size() != 6) {
-            throw new IllegalArgumentException(WINNING_NUMBERS_SIZE_ERROR.getMessage());
-        }
-    }
 
-    private static void validateLottoResultDuplicate(List<Integer> numbers, int bonusNumber) {
-        HashSet<Integer> numbersSet = new HashSet<>(numbers);
+    private static void validateLottoResultDuplicate(WinningLotto winningNumber, int bonusNumber) {
+        HashSet<Integer> numbersSet = new HashSet<>(winningNumber.getNumbers());
         numbersSet.add(bonusNumber);
 
-        if(numbersSet.size() != numbers.size() + 1) {
+        if(numbersSet.size() != winningNumber.getNumbers().size() + 1) {
             throw new IllegalArgumentException(LOTTO_RESULT_DUPLICATE_ERROR.getMessage());
         }
     }

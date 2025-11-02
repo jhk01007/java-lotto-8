@@ -1,7 +1,7 @@
 package lotto.view.flow;
 
 import lotto.global.BaseResponse;
-import lotto.view.InputValidator;
+import lotto.view.InputParser;
 import lotto.view.LottoInputView;
 import lotto.view.LottoOutputView;
 import lotto.controller.AnalysisLottoTicketController;
@@ -46,7 +46,7 @@ public class AnalysisFlow {
         while (true) {
             String input = lottoInputView.readWinningNumbers();
             try {
-                return InputValidator.parseAndValidateWinningNumbers(input);
+                return InputParser.parseWinningNumbers(input);
             } catch (IllegalArgumentException e) {
                 lottoOutputView.printErrorMessage(e.getMessage());
             }
@@ -60,7 +60,7 @@ public class AnalysisFlow {
         while (true) {
             String input = lottoInputView.readBonusNumber();
             try {
-                return InputValidator.parseAndValidateInt(input);
+                return InputParser.parseInt(input);
             } catch (IllegalArgumentException e) {
                 lottoOutputView.printErrorMessage(e.getMessage());
             }

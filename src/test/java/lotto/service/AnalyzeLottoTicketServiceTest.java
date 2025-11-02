@@ -5,6 +5,7 @@ import lotto.domain.LottoWinningNumber;
 import lotto.domain.vo.Lotto;
 import lotto.domain.vo.LottoRank;
 import lotto.domain.vo.PurchaseAmount;
+import lotto.domain.vo.WinningLotto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -77,7 +78,7 @@ class AnalyzeLottoTicketServiceTest {
 
     private static LottoWinningNumber createLottoWinningNumbers(List<Integer> winningNumbers, int bonusNumber) {
         return LottoWinningNumber.of(
-                winningNumbers,
+                WinningLotto.from(winningNumbers),
                 bonusNumber
         );
     }
