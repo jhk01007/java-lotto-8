@@ -23,10 +23,8 @@ class LottoTicketTest {
                 Lotto.from(List.of(1, 2, 12, 15, 18, 24)),
                 Lotto.from(List.of(5, 7, 11, 23, 35, 40))
         );
-
         // when
         LottoTicket lottoTicket = LottoTicket.of(purchaseAmount, lottos);
-
         // then
         assertThat(lottoTicket.getPurchaseAmount()).isEqualTo(purchaseAmount);
         assertThat(lottoTicket.getPurchasedLottos()).isEqualTo(lottos);

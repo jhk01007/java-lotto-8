@@ -38,7 +38,10 @@ class PurchaseLottoControllerTest {
         // then
         assertThat(response.isSuccess()).isTrue();
         assertThat(response.getResult()).isPresent();
+        assertResponse(response, amount);
+    }
 
+    private static void assertResponse(BaseResponse<PurchaseResponse> response, int amount) {
         PurchaseResponse purchaseResponse = response.getResult().get();
         int numberOfGames = amount / LottoConstants.PRICE_PER_GAME;
         assertThat(purchaseResponse.numberOfGames()).isEqualTo(numberOfGames);

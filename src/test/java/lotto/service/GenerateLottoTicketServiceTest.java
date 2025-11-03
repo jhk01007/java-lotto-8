@@ -11,7 +11,6 @@ import static org.assertj.core.api.Assertions.*;
 
 class GenerateLottoTicketServiceTest {
 
-    private static final int RANDOM_SEED = 1000;
     private final LottoNumberGenerator lottoNumberGenerator = new RandomLottoNumberGenerator();
     private final GenerateLottoTicketService service = new GenerateLottoTicketService(lottoNumberGenerator);
 

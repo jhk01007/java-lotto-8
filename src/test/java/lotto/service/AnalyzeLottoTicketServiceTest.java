@@ -34,6 +34,10 @@ class AnalyzeLottoTicketServiceTest {
         HashMap<LottoRank, Integer> results = service.computeWinningResults(lottoTicket, lottoWinningNumber);
 
         // then
+        assertResult(results);
+    }
+
+    private static void assertResult(HashMap<LottoRank, Integer> results) {
         assertThat(results).hasSize(LottoRank.values().length)
                 .containsExactlyInAnyOrderEntriesOf(
                         Map.of(
