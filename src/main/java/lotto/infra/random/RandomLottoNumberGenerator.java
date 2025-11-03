@@ -1,12 +1,13 @@
 package lotto.infra.random;
 
 import camp.nextstep.edu.missionutils.Randoms;
+import lotto.domain.LottoNumberGenerator;
 
 import java.util.List;
 
 import static lotto.global.constants.LottoConstants.*;
 
-public class RandomLottoNumberGenerator implements LottoNumberGenerator{
+public class RandomLottoNumberGenerator implements LottoNumberGenerator {
 
     @Override
     public List<Integer> generate() {

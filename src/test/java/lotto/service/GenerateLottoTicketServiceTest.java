@@ -2,7 +2,7 @@ package lotto.service;
 
 import lotto.domain.LottoTicket;
 import lotto.domain.vo.PurchaseAmount;
-import lotto.infra.random.LottoNumberGenerator;
+import lotto.domain.LottoNumberGenerator;
 import lotto.infra.random.RandomLottoNumberGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

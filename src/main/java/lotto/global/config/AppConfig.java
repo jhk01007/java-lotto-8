@@ -2,7 +2,7 @@ package lotto.global.config;
 
 import lotto.controller.AnalysisLottoTicketController;
 import lotto.controller.PurchaseLottoController;
-import lotto.infra.random.LottoNumberGenerator;
+import lotto.domain.LottoNumberGenerator;
 import lotto.infra.random.RandomLottoNumberGenerator;
 import lotto.service.AnalyzeLottoTicketService;
 import lotto.service.GenerateLottoTicketService;

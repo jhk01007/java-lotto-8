@@ -6,7 +6,7 @@ import lotto.controller.dto.response.PurchaseResponse;
 import lotto.global.BaseResponse;
 import lotto.global.constants.LottoConstants;
 import lotto.global.exception.ErrorMessage;
-import lotto.infra.random.LottoNumberGenerator;
+import lotto.domain.LottoNumberGenerator;
 import lotto.infra.random.RandomLottoNumberGenerator;
 import lotto.service.GenerateLottoTicketService;
 import org.junit.jupiter.api.DisplayName;

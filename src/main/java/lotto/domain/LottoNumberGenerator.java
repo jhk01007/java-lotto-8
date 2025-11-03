@@ -1,4 +1,4 @@
-package lotto.infra.random;
+package lotto.domain;
 
 import java.util.List;
 
